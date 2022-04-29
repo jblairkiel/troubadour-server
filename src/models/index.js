@@ -1,6 +1,7 @@
 // from the express-sequelize example app;
 let fs = require('fs');
 let path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../../config.env') })
 let Sequelize = require('sequelize');
 
 let sequelize = new Sequelize(process.env.CONNECTION_STRING, {
@@ -14,7 +15,7 @@ fs
     return (file.indexOf('.') !== 0) && (file !== 'index.js');
   })
   .forEach(function(file) {
-    let model = sequelize.import(path.join(__dirname, file));
+    let model = import(path.join(__dirname, file));
     db[model.name] = model;
   });
 
