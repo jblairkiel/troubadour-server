@@ -4,9 +4,10 @@
   "description": "",
   "main": "src/main.js",
   "scripts": {
-    "test": "echo 'Tests coming soon!'",
+    "test": "mocha tests/tests.js --reporter spec",
+    "run-and-test-dev": "start-server-and-test start-dev http://localhost:8080 test",
     "eslint": "eslint src",
-    "eslint-fix": "eslint --fix src",
+    "eslint-fix": "eslint --fix src && eslint --fix tests",
     "clean": "./node_modules/rimraf/bin.js ./out",
     "build-docs": "apidoc -i src/ -o out/docs/ -f \"controllers/.*\\.js\"",
     "pre-build": "npm run eslint-fix && npm run eslint && npm run clean",
@@ -24,6 +25,7 @@
     "braces": "^3.0.2",
     "cache-manager": "^2.11.1",
     "cache-manager-redis": "^0.4.0",
+    "chai": "^4.3.6",
     "core-js": "^3.23.3",
     "dotenv": "^4.0.0",
     "errorhandler": "^1.5.1",
@@ -42,7 +44,8 @@
     "rimraf": "^3.0.2",
     "sequelize": "^6.21.2",
     "sequelize-cli": "^6.4.1",
-    "spotify-web-api-node": "^5.0.2"
+    "spotify-web-api-node": "^5.0.2",
+    "supertest": "^6.2.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.18.6",
@@ -50,7 +53,13 @@
     "@babel/eslint-parser": "^7.18.2",
     "@babel/eslint-plugin": "^7.17.7",
     "@babel/preset-env": "^7.18.6",
+    "@babel/register": "^7.18.6",
     "babel-preset-env": "^1.7.0",
-    "babel-watch": "^7.7.0"
+    "babel-watch": "^7.7.0",
+    "eslint-plugin-jsx-a11y": "^6.6.0",
+    "eslint-plugin-react": "^7.30.1",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "mocha": "^10.0.0",
+    "start-server-and-test": "^1.14.0"
   }
 }

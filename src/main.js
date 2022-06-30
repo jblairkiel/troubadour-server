@@ -51,6 +51,6 @@ if (process.env.NODE_ENV === 'development') {
 
 app.use(defaultHandler);
 
-app.listen(process.env.PORT || 3000, function() {
+module.exports = app.listen(process.env.PORT || 3000, function() {
   console.log('Troubadour Server Listening on port 3000');
 });
