@@ -19,6 +19,7 @@
   "license": "ISC",
   "dependencies": {
     "apidoc": "^0.19.1",
+    "babel": "^6.23.0",
     "babel-polyfill": "^6.26.0",
     "body-parser": "^1.17.0",
     "braces": "^3.0.2",
