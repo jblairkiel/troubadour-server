@@ -1,6 +1,5 @@
 const request = require('supertest');
 const app = require('../src/main.js')
-var expect = require("chai").expect;
 
 
 
