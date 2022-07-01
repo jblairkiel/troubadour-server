@@ -4,7 +4,6 @@
   "description": "",
   "main": "src/main.js",
   "scripts": {
-    "run-and-test-dev": "start-server-and-test start-dev http://localhost:3000 test",
     "eslint": "eslint src",
     "eslint-fix": "eslint --fix src && eslint --fix tests",
     "clean": "./node_modules/rimraf/bin.js ./out",
