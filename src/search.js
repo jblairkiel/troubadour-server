@@ -108,7 +108,7 @@ export default class Searcher {
 
      const data = result.body;
      for(let key in data) {
-       if(data.hasOwnProperty(key)) {
+       if(Object.prototype.hasOwnProperty.call(data, key)) {
          output[key] = data[key].items.sort(getTermSortFunc(term));
        }
      }

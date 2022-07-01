@@ -1,6 +1,9 @@
 const REQUIRE_HEADER_DEFAULTS = {
   header_name: 'X-API-HEADER',
-  validation_func: (...rest) => true,
+  validation_func: (...rest) => {
+    console.log(rest)
+    return true
+  },
   error_message: `Missing header: X-API-HEADER`,
 };
 

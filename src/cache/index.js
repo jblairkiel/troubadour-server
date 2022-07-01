@@ -21,7 +21,7 @@ const CACHE_WAIT_TIME = 500; // wait 500 ms before giving up on the cache
 export async function tryCacheForeach(items, namespace) {
   let promises = items.map((item) => {
     let key = [namespace, item];
-    key = key.map(JSON.stringify).join('-').replace(/\"/g, '');
+    key = key.map(JSON.stringify).join('-').replace(/"/g, '');
 
     return createTimeoutPromise(
         redisCache.get(key), CACHE_WAIT_TIME)
@@ -33,6 +33,7 @@ export async function tryCacheForeach(items, namespace) {
           }
         })
         .catch((x) => {
+          console.log(x)
           return {found: false, value: item};
         });
   });
@@ -49,7 +50,7 @@ export async function tryCacheForeach(items, namespace) {
 export function cacheItems(items, namespace) {
   for(let item of items) {
     let key = [namespace, item.key];
-    key = key.map(JSON.stringify).join('-').replace(/\"/g, '');
+    key = key.map(JSON.stringify).join('-').replace(/"/g, '');
     redisCache.set(key, item.value);
   }
 }

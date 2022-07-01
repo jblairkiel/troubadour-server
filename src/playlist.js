@@ -16,6 +16,7 @@ function fixPlaylist(playlist) {
 
 export class Playlist {
   constructor(userId, accessToken) {
+    console.log("accessToken" + accessToken)
     this.userId = userId;
   }
 
