@@ -4,8 +4,8 @@
   "description": "",
   "main": "src/main.js",
   "scripts": {
-    "test": "mocha tests/tests.js --reporter spec",
-    "run-and-test-dev": "start-server-and-test start-dev http://localhost:8080 test",
+    "test": "start-dev && mocha tests/tests.js --reporter spec",
+    "run-and-test-dev": "start-server-and-test start-dev http://localhost:3000 test",
     "eslint": "eslint src",
     "eslint-fix": "eslint --fix src && eslint --fix tests",
     "clean": "./node_modules/rimraf/bin.js ./out",
