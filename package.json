@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/main.js",
   "scripts": {
-    "test": "start-dev && mocha tests/tests.js --reporter spec",
+    "test": "npm start-dev && mocha tests/tests.js --reporter spec",
     "run-and-test-dev": "start-server-and-test start-dev http://localhost:3000 test",
     "eslint": "eslint src",
     "eslint-fix": "eslint --fix src && eslint --fix tests",
