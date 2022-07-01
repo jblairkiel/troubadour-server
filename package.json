@@ -13,7 +13,7 @@
     "build": "npm run pre-build && npm run build-docs && babel src --out-dir out/",
     "start": "NODE_ENV='production' node out/main.js",
     "start-dev": "NODE_ENV='development' babel-watch src/main.js",
-    "test": "npm start-dev && mocha tests/tests.js --reporter spec"
+    "test": "npm run start-dev && mocha tests/tests.js --reporter spec"
   },
   "keywords": [],
   "author": "",
