@@ -1,5 +1,6 @@
 const request = require('supertest');
 const app = require('../src/main.js')
+//var expect = require("chai").expect;
 
 
 
@@ -10,6 +11,6 @@ describe('getSearchBeyonce() function', function() {
         .get('/search?q=beyonce')
         .expect(200)
         .expect('Content-Type',/json/)
-        //.expect(getSearchBeyonce().ToString().to.equal(/'{"text":"some json"}'/i.toString()))
+        //.expect(getSearchBeyonce().ToString().to.equal(/'{"data":*}'/i.toString()))
     })
   })
