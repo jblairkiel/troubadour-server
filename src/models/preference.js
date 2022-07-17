@@ -1,5 +1,8 @@
-export default function(sequelize, DataTypes) {
-  return sequelize.define('Preference', {
+const { DataTypes } = require('sequelize');
+
+module.exports = (sequelize) => {
+
+	const Preference = sequelize.define('Preference', {
     preference_id: {type: DataTypes.INTEGER,
                     autoIncrement: true,
                     primaryKey: true},
@@ -13,4 +16,6 @@ export default function(sequelize, DataTypes) {
       },
     },
   }, {timestamps: false, tableName: 'preference'});
+
+  return Preference;
 }

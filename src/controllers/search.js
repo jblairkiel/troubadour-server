@@ -88,6 +88,7 @@ app.get('/', async (req, res) => {
     let types = req.query.type ? req.query.type.split(',') : null;
 
     let data = await search(req.query.q, req.query.page, types);
+    res.header("Access-Control-Allow-Origin", "*");
     res.json({data});
 });
 

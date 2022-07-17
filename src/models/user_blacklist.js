@@ -1,5 +1,8 @@
-export default function(sequelize, DataTypes) {
-  return sequelize.define('UserBlacklist', {
+const { DataTypes } = require('sequelize');
+
+module.exports = (sequelize) => {
+
+	sequelize.define('UserBlacklist', {
     preference_id: {type: DataTypes.INTEGER,
                     autoIncrement: true,
                     primaryKey: true},

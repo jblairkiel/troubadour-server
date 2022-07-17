@@ -1,5 +1,8 @@
-export default function(sequelize, DataTypes) {
-  return sequelize.define('PlaylistPreference', {
+const { DataTypes } = require('sequelize');
+
+module.exports = (sequelize) => {
+
+	sequelize.define('PlaylistPreference', {
     playlist_id: {
       type: DataTypes.TEXT,
       references: {

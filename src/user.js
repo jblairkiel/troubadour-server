@@ -30,6 +30,8 @@ export class User {
     return await db.TroubadourUser.upsert({
       user_id: this.userId,
       updated_at: db.sequelize.fn('NOW'),
-    });
+    }).then(function(test){
+      console.log(test);//test returned here as true or false how can i get the inserted id here so i can insert data in other tables using this new id?
+  });
   }
 }

@@ -30,6 +30,7 @@ export class Preferences {
   }
 
   async add(newPreferences) {
+    db.sequelize.sync();
     await db.TroubadourUser.findCreateFind({
       where: {
         user_id: this.userId,

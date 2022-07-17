@@ -1,5 +1,8 @@
-export default function(sequelize, DataTypes) {
-  return sequelize.define('Playlist', {
+const { DataTypes } = require('sequelize');
+
+module.exports = (sequelize) => {
+
+	sequelize.define('Playlist', {
     playlist_id: {type: DataTypes.TEXT, primaryKey: true},
     created_by: {
       type: DataTypes.TEXT,

@@ -28,6 +28,7 @@ app.use(requireHeader({
 app.put('/', async (req, resp) => {
     let userId = req.get('X-USER-ID');
     let body = req.body;
+    //let body = req.query;
     let data = await new User(userId).updateLocation(body);
     if(data) {
       resp.json({data: 'sent'});
