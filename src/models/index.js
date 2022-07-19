@@ -4,7 +4,7 @@ let path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../../config.env') })
 let Sequelize = require('sequelize');
 
-// let sequelize = new Sequelize("troubadour", "postgres", null, {
+// let sequelize = new Sequelize("troubadour", "postgres", "1", {
 
 //   host: 'localhost',
 //   dialect:'postgres',
@@ -17,26 +17,26 @@ let Sequelize = require('sequelize');
 //   },
 //   logging: process.env.NODE_ENV == 'development' ? console.log : false,
 // });
-let sequelize = new Sequelize("postgres://postgres@localhost:5432/troubadour");
-// let sequelize = new Sequelize(process.env.CONNECTION_STRING, {
-//   logging: process.env.NODE_ENV == 'development' ? console.log : false,
-// });
+//let sequelize = new Sequelize('postgres://postgres:1@localhost:5432/troubadour');
+let sequelize = new Sequelize(process.env.CONNECTION_STRING, {
+  logging: process.env.NODE_ENV == 'development' ? console.log : false,
+});
 let db = {};
 
-// let playlist = require('./playlist')
-// let playlist_preference = require("./playlist_preference")
-// let preference = require("./preference")
-// let troubadour_user = require("./troubadour_user")
-// let user_blacklist = require("./user_blacklist")
-// db[model.name] = playlist;
-// db[playlist_preference.name] = playlist_preference;
-// db[preference.name] = preference;
-// db[troubadour_user.name] = troubadour_user;
-// db[user_blacklist.name] = user_blacklist;
-//let troubadour_user = sequelize.import("./troubadour_user")
-//var trUs = sequelize["import"]("./troubadour_user");
-let trUs = require("./troubadour_user")(sequelize, Sequelize.DataTypes)
-db[trUs.name] = trUs
+let playlist = require('./playlist')(sequelize, Sequelize.DataTypes)
+db[playlist.name] = playlist;
+let playlist_preference = require("./playlist_preference")(sequelize, Sequelize.DataTypes)
+let preference = require("./preference")(sequelize, Sequelize.DataTypes)
+let troubadour_user = require("./troubadour_user")(sequelize, Sequelize.DataTypes)
+let user_blacklist = require("./user_blacklist")(sequelize, Sequelize.DataTypes)
+db[playlist_preference.name] = playlist_preference;
+db[preference.name] = preference;
+db[troubadour_user.name] = troubadour_user;
+db[user_blacklist.name] = user_blacklist;
+
+
+//let trUs = require("./troubadour_user")(sequelize, Sequelize.DataTypes)
+//db[trUs.name] = trUs
 // fs
 //   .readdirSync(__dirname)
 //   .filter(function(file) {
@@ -58,6 +58,7 @@ Object.keys(db).forEach(function(modelName) {
 });
 
 db.sequelize = sequelize;
+//sequelize.sync({ force: true });
 db.Sequelize = Sequelize;
 try {
   sequelize.authenticate();

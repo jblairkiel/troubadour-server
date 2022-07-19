@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
 
-	sequelize.define('UserBlacklist', {
+	const UserBlacklist = sequelize.define('UserBlacklist', {
     preference_id: {type: DataTypes.INTEGER,
                     autoIncrement: true,
                     primaryKey: true},
@@ -16,4 +16,5 @@ module.exports = (sequelize) => {
       },
     },
   }, {timestamps: false, tableName: 'user_blacklist'});
+  return UserBlacklist;
 }

@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
 
-	sequelize.define('Playlist', {
+	const Playlist = sequelize.define('Playlist', {
     playlist_id: {type: DataTypes.TEXT, primaryKey: true},
     created_by: {
       type: DataTypes.TEXT,
@@ -36,4 +36,5 @@ module.exports = (sequelize) => {
     }, // eslint-disable-line
     radius: DataTypes.INTEGER,
   }, {timestamps: false, tableName: 'playlist'});
+  return Playlist;
 }

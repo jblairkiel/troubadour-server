@@ -1,11 +1,15 @@
 import {Router} from 'express';
 import {requireHeader} from '../middleware';
-import {User} from '../user';
+//import {User} from '../user';
 import locationController from './location';
 import blacklistController from './blacklist';
+//import {database as db} from '../startup';
+//const dataDB = require('../../db');
+//import {TroubadourError} from './helpers';
 
 
 const app = new Router();
+const User = require('../user');
 
 app.use(requireHeader({
   header_name: 'X-USER-ID',
@@ -77,9 +81,13 @@ app.get('/', async (req, resp) => {
  /* eslint-enable max-len */
 app.post('/', async (req, resp) => {
     let userId = req.get('X-USER-ID');
-    let created = await new User(userId).create();
+
+    const user = new User(userId);
+    let created = await user.create();
+
     resp.status(created ? 201: 304);
     return resp.json({data: {created: created}});
+
 });
 
 app.use('/location', locationController);

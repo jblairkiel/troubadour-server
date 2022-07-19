@@ -2,6 +2,7 @@ import SpotifyApi from 'spotify-web-api-node';
 import Levenshtein from 'levenshtein';
 import {groupBy, TroubadourError} from './helpers';
 import {tryCacheForeach, cacheItems} from './cache';
+const dotenv = require('dotenv');
 const SEARCH_TYPES = ['track', 'genre', 'album', 'artist'];
 
 const GENRES = require(process.env.GENRE_FILE);

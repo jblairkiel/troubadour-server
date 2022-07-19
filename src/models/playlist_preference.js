@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
 
-	sequelize.define('PlaylistPreference', {
+	const PlaylistPreference = sequelize.define('PlaylistPreference', {
     playlist_id: {
       type: DataTypes.TEXT,
       references: {
@@ -18,4 +18,5 @@ module.exports = (sequelize) => {
       },
     },
   }, {timestamps: false, tableName: 'playlist_preference'});
+  return PlaylistPreference;
 }
