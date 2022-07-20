@@ -1,57 +1,83 @@
-import {database as db} from './startup';
 import Searcher from './search';
-import {TroubadourError} from './helpers';
+import { TroubadourError } from './helpers';
+import User from './user';
+const dataDB = require("../db");
+var format = require('pg-format');
 
-
-export class Preferences {
-  constructor(userId) {
-    this.userId = userId;
-  }
-
-  async getAll() {
-    let userCount = await db.TroubadourUser
-                            .count({
-                              where: {user_id: this.userId},
-                            });
-    if(userCount == 0) {
-      throw new TroubadourError('User does not exist', 400);
-    }
-
-    let preferences = await db.Preference.findAll({
-      attributes: ['spotify_uri'],
-      where: {
-        user_id: this.userId,
-      },
-    });
-
-    const searcher = new Searcher();
-    return await searcher.fromSpotifyUris(
-      preferences.map((x) => x.spotify_uri));
-  }
-
-  async add(newPreferences) {
-    db.sequelize.sync();
-    await db.TroubadourUser.findCreateFind({
-      where: {
-        user_id: this.userId,
-      },
-      defaults: {user_id: this.userId, updated_at: db.sequelize.fn('NOW')},
-    });
-    let finished = await db.Preference.bulkCreate(
-      newPreferences.map((x) => Object.assign(x, {user_id: this.userId}))
-    );
-
-    return finished;
-  }
-
-  async delete(spotifyUris) {
-    return db.Preference.destroy({
-      where: {
-        user_id: this.userId,
-        spotify_uri: {
-          $in: spotifyUris,
-        },
-      },
-    });
-  }
+function Preferences(user_id) {
+	this.user_id = user_id;
 }
+
+Preferences.prototype.getAll = async function () {
+
+	try {
+		const userCount = await dataDB.query(
+			`Select COUNT(playlist_id) from Troubadour_Users
+      Where user_id = $1`,
+			[this.user_id]
+		)
+
+		if (userCount == 0) {
+			throw new TroubadourError('User does not exist', 400);
+		}
+	} catch (error) {
+		throw new TroubadourError('User does not exist', 400);
+	}
+	try {
+		const preferences = await dataDB.query(
+			`Select spotify_uri from Preference
+      		Where user_id = $1`,
+			[this.user_id]
+		)
+
+		const searcher = new Searcher();
+		return await searcher.fromSpotifyUris(
+			preferences.map((x) => x.spotify_uri));
+	} catch (error) {
+		throw new TroubadourError('User does not exist', 400);
+	}
+
+}
+
+Preferences.prototype.add = async function (newPreferences) {
+	try {
+		let user = await new User(this.user_id).get();
+		if (user == null) {
+			user = await new User(this.user_id).create();
+		}
+
+	} catch (err) {
+		return err;
+	}
+	try {
+		for (var i = 0; i < newPreferences.length; i++) {
+			newPreferences[i]["user_id"] = this.user_id
+		}
+		await dataDB.insertQuery(
+			`INSERT INTO Preferences(user_id, spotify_uri, name) 
+              VALUES $1`,[newPreferences]
+			)
+		return newPreferences
+	} catch (err) {
+		throw new TroubadourError('Error Creating multiple preferences', 400);
+	}
+}
+
+
+
+
+Preferences.prototype.delete = async function (spotifyUris) {
+
+	try {
+
+		const deleteResults = await dataDB.insertQuery(
+			`DELETE FROM Preferences 
+               Where user_id = $1 AND spotify_uri = ANY($2::Text[])`,
+			[this.user_id, spotifyUris])
+		return deleteResults
+	} catch (error) {
+		throw new TroubadourError('Error Deleting preferences', 400);
+	}
+}
+
+module.exports = Preferences;

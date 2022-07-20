@@ -1,9 +1,10 @@
-import {Router} from 'express';
-import {requireHeader} from '../middleware';
-import {User} from '../user';
-import {TroubadourError} from '../helpers';
+import { Router } from 'express';
+import { requireHeader } from '../middleware';
+//import {User} from '../user';
+import { TroubadourError } from '../helpers';
 
 const app = new Router();
+const User = require('../user');
 
 app.use(requireHeader({
   header_name: 'X-USER-ID',
@@ -26,15 +27,15 @@ app.use(requireHeader({
  *    }
  */
 app.put('/', async (req, resp) => {
-    let userId = req.get('X-USER-ID');
-    let body = req.body;
-    //let body = req.query;
-    let data = await new User(userId).updateLocation(body);
-    if(data) {
-      resp.json({data: 'sent'});
-    } else {
-      throw new TroubadourError('Something went wrong. ;(');
-    }
+  let userId = req.get('X-USER-ID');
+  let body = req.body;
+  //let body = req.query;
+  let data = await new User(userId).updateLocation(body);
+  if (data) {
+    resp.json({ data: 'sent' });
+  } else {
+    throw new TroubadourError('Something went wrong. ;(');
+  }
 });
 
 

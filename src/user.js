@@ -1,4 +1,3 @@
-import { database as db } from './startup';
 import { TroubadourError } from './helpers';
 const dataDB = require('../db');
 
@@ -9,17 +8,14 @@ function User(userId) {
 
 User.prototype.get = async function () {
 	try {
-
 		const getResult = await dataDB.queryGetOne(
 			`Select * from Troubadour_Users
 			Where user_id = $1`,
 			[this.userId]
 		)
 		return getResult;
-		//const curUser = await db.troubadourusers.findAll({ where: { user_id: this.userId } });
-		//return curUser;
 	} catch (error) {
-		console.log(error)
+		throw new TroubadourError('User does not exist', 400);
 	}
 }
 
@@ -31,32 +27,21 @@ User.prototype.updateLocation = async function (newLocation) {
 			'See docs at https://api.troubadour.tk/docs. ', 400);
 	}
 	try {
+		var dateNow = new Date(Date.now()).toISOString();
+		// var now_utc = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(),
+		// 				date.getUTCDate(), date.getUTCHours(),
+		// 				date.getUTCMinutes(), date.getUTCSeconds());
+
+		// console.log(new Date(now_utc));
+		// console.log(date.toISOString());
 		const { updateResult } = await dataDB.updateQuery(
-			`UPDATE Troubadour_Users
-			set updated_at = '$1', last_location = '$2'
-			where user_id = '$3'`,
-			[Date.now(), newLocation, this.userId]
+			"UPDATE Troubadour_Users set updated_at = $1, last_location = 'POINT($2 $3)' where user_id = $4",
+			[dateNow, newLocation.lat, newLocation.long, this.userId]
 		);
 		return updateResult;
 	} catch (err) {
-		console.log(err)
-		return err;
+		throw new TroubadourError('Error updating user', 400);
 	}
-	// const user = db.troubadourusers.build({ 
-	//   user_id: this.userId,
-	//   updated_at: db.sequelize.fn('NOW'),
-	//   last_location: newLocation
-	//  }).save();
-	// console.log(user.toJSON()); // This is good!
-	// console.log(JSON.stringify(user, null, 4)); // This is also good!
-
-	// await db.TroubadourUser.upsert({
-	//     user_id: this.userId,
-	//     updated_at: db.sequelize.fn('NOW'),
-	//     last_location: newLocation,
-	// });
-
-	//return true;
 }
 
 User.prototype.create = async function () {
@@ -67,13 +52,8 @@ User.prototype.create = async function () {
 			[this.userId, this.userId, null, null]
 		)
 		return insertResult;
-		// .then(res => {
-		// 	console.log(res.rows[0])
-		// 	return res
-		// 	// { name: 'brianc', email: 'brian.m.carlson@gmail.com' }
-		// });
 	} catch (err) {
-		return err;
+		throw new TroubadourError('Error creating user', 400);
 	}
 }
 

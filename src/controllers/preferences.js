@@ -1,8 +1,9 @@
 import {Router} from 'express';
 import {requireHeader} from '../middleware';
-import {Preferences} from '../preferences';
+
 
 const app = new Router();
+const Preferences = require('../preferences');
 
 app.use(requireHeader({
   header_name: 'X-USER-ID',
@@ -53,7 +54,8 @@ app.get('/', async (req, resp) => {
 app.put('/', async (req, resp) => {
     let userId = req.get('X-USER-ID');
     let body = req.body;
-    let data = await new Preferences(userId).add(body);
+    let troubadourPref = new Preferences(userId);
+    let data = await troubadourPref.add(body);
     resp.json({data});
 });
 

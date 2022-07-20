@@ -1,11 +1,7 @@
-import {Router} from 'express';
-import {requireHeader} from '../middleware';
-//import {User} from '../user';
+import { Router } from 'express';
+import { requireHeader } from '../middleware';
 import locationController from './location';
 import blacklistController from './blacklist';
-//import {database as db} from '../startup';
-//const dataDB = require('../../db');
-//import {TroubadourError} from './helpers';
 
 
 const app = new Router();
@@ -47,15 +43,15 @@ app.use(requireHeader({
     }
  * }
  */
- /* eslint-enable max-len */
+/* eslint-enable max-len */
 app.get('/', async (req, resp) => {
-    let userId = req.get('X-USER-ID');
-    let user = await new User(userId).get();
-    if (user === null) {
-      resp.status(404).json({error: `User ${userId} does not exist.`});
-    } else {
-      resp.json({data: user});
-    }
+  let userId = req.get('X-USER-ID');
+  let user = await new User(userId).get();
+  if (user === null) {
+    resp.status(404).json({ error: `User ${userId} does not exist.` });
+  } else {
+    resp.json({ data: user });
+  }
 });
 
 
@@ -78,15 +74,15 @@ app.get('/', async (req, resp) => {
  *    }
  * }
  */
- /* eslint-enable max-len */
+/* eslint-enable max-len */
 app.post('/', async (req, resp) => {
-    let userId = req.get('X-USER-ID');
+  let userId = req.get('X-USER-ID');
 
-    const user = new User(userId);
-    let created = await user.create();
+  const user = new User(userId);
+  let created = await user.create();
 
-    resp.status(created ? 201: 304);
-    return resp.json({data: {created: created}});
+  resp.status(created ? 201 : 304);
+  return resp.json({ data: { created: created } });
 
 });
 

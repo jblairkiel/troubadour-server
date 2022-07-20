@@ -7,7 +7,7 @@ import bodyParser from 'body-parser';
 import errorhandler from 'errorhandler';
 import morgan from 'morgan';
 
-import {errorHandler as defaultHandler} from './middleware';
+import { errorHandler as defaultHandler } from './middleware';
 
 import searchController from './controllers/search';
 import locationController from './controllers/location';
@@ -21,7 +21,7 @@ const app = express();
 // for parsing application/json
 app.use(bodyParser.json());
 // for parsing application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 if (process.env.NODE_ENV === 'development') {
   // only use in development
@@ -31,7 +31,7 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('combined'));
 }
 
-app.get('/', function(req, res) {
+app.get('/', function (req, res) {
   res.send('Hello World!');
 });
 
@@ -51,6 +51,6 @@ if (process.env.NODE_ENV === 'development') {
 
 app.use(defaultHandler);
 
-module.exports = app.listen(process.env.PORT || 3000, function() {
+module.exports = app.listen(process.env.PORT || 3000, function () {
   console.log('Troubadour Server Listening on port 3000');
 });
