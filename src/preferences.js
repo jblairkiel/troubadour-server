@@ -2,7 +2,8 @@ import Searcher from './search';
 import { TroubadourError } from './helpers';
 import User from './user';
 const dataDB = require("../db");
-var format = require('pg-format');
+//var format = require('pg-format');
+//const dataDB = require("pg-promise")();
 
 function Preferences(user_id) {
 	this.user_id = user_id;
@@ -53,10 +54,7 @@ Preferences.prototype.add = async function (newPreferences) {
 		for (var i = 0; i < newPreferences.length; i++) {
 			newPreferences[i]["user_id"] = this.user_id
 		}
-		await dataDB.insertQuery(
-			`INSERT INTO Preferences(user_id, spotify_uri, name) 
-              VALUES $1`,[newPreferences]
-			)
+		dataDB.insertMultiple(["user_id", "spotify_uri", "name"], "preference", newPreferences)
 		return newPreferences
 	} catch (err) {
 		throw new TroubadourError('Error Creating multiple preferences', 400);
@@ -70,8 +68,8 @@ Preferences.prototype.delete = async function (spotifyUris) {
 
 	try {
 
-		const deleteResults = await dataDB.insertQuery(
-			`DELETE FROM Preferences 
+		const deleteResults = await dataDB.query(
+			`DELETE FROM Preference 
                Where user_id = $1 AND spotify_uri = ANY($2::Text[])`,
 			[this.user_id, spotifyUris])
 		return deleteResults

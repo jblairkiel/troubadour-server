@@ -6,3 +6,4 @@ CREATE TABLE user_blacklist (
   spotify_uri text,
   name text -- more for our use than for display as we're pull this from Spotify
 );
+alter table preference add constraint pref_unique UNIQUE (preference_id);
