@@ -6,6 +6,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import errorhandler from 'errorhandler';
 import morgan from 'morgan';
+import cors from 'cors';
 
 import { errorHandler as defaultHandler } from './middleware';
 
@@ -18,6 +19,19 @@ import userController from './controllers/user';
 
 
 const app = express();
+app.use(cors());
+// const allowedOrigins = ['www.example1.com'];
+// app.use(cors({
+//   origin: function(origin, callback){
+//     if(!origin) return callback(null, true);
+//     if(allowedOrigins.indexOf(origin) === -1){
+//       const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+//       return callback(new Error(msg), false);
+//     }
+//     return callback(null, true);
+//   }
+
+// }));
 // for parsing application/json
 app.use(bodyParser.json());
 // for parsing application/x-www-form-urlencoded

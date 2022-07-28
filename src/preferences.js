@@ -2,6 +2,7 @@ import Searcher from './search';
 import { TroubadourError } from './helpers';
 import User from './user';
 const dataDB = require("../db");
+const searcher = new Searcher();
 //var format = require('pg-format');
 //const dataDB = require("pg-promise")();
 
@@ -12,8 +13,8 @@ function Preferences(user_id) {
 Preferences.prototype.getAll = async function () {
 
 	try {
-		const userCount = await dataDB.query(
-			`Select COUNT(playlist_id) from Troubadour_Users
+		const userCount = await dataDB.getCount(
+			`Select COUNT(user_id) from Troubadour_Users
       Where user_id = $1`,
 			[this.user_id]
 		)
@@ -31,7 +32,6 @@ Preferences.prototype.getAll = async function () {
 			[this.user_id]
 		)
 
-		const searcher = new Searcher();
 		return await searcher.fromSpotifyUris(
 			preferences.map((x) => x.spotify_uri));
 	} catch (error) {
@@ -54,7 +54,7 @@ Preferences.prototype.add = async function (newPreferences) {
 		for (var i = 0; i < newPreferences.length; i++) {
 			newPreferences[i]["user_id"] = this.user_id
 		}
-		dataDB.insertMultiple(["user_id", "spotify_uri", "name"], "preference", newPreferences)
+		dataDB.insertMultiple(["user_id", "spotify_uri", "name"], "preference", newPreferences, 'user_uri_unique')
 		return newPreferences
 	} catch (err) {
 		throw new TroubadourError('Error Creating multiple preferences', 400);

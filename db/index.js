@@ -18,11 +18,29 @@ const pool = pgp(cn);
 pool.connect();
 
 module.exports = {
-    async insertMultiple(columnNames, tableName, bulkDataset) {
+    
+    async getCount(text, params) {
+        // invocation timestamp for the query method
+        const start = Date.now();
+        try {
+            const queryResult = await pool.any(text, params)
+            const duration = Date.now() - start;
+            console.log(
+                'executed query',
+                { text, duration, rows: queryResult.rowCount }
+            );
+            return queryResult[0].count;
+        } catch (error) {
+            console.log('error in query', { text });
+            throw error;
+        }
+    },
+
+    async insertMultiple(columnNames, tableName, bulkDataset, constraintName) {
         try {
 
             const setTable = new pgp.helpers.ColumnSet(columnNames, { table: tableName });
-            const onConflict = ' ON CONFLICT ON CONSTRAINT pref_unique DO NOTHING RETURNING *';
+            const onConflict = ' ON CONFLICT ON CONSTRAINT ' + constraintName + ' DO NOTHING RETURNING *';
             const insertOnConflict = pgp.helpers.insert(bulkDataset, setTable) + onConflict;
             // executing the query:
             await pool.none(insertOnConflict);
@@ -91,7 +109,7 @@ module.exports = {
                 'executed query',
                 { text, duration, rows: queryResult.rowCount }
             );
-            return queryResult.rows;
+            return queryResult;
         } catch (error) {
             console.log('error in query', { text });
             throw error;

@@ -1,7 +1,7 @@
-import {Router} from 'express';
+import { Router } from 'express';
 
 import Searcher from '../search';
-import {createCachedFunction} from '../cache';
+import { createCachedFunction } from '../cache';
 
 const app = new Router();
 
@@ -30,36 +30,36 @@ const app = new Router();
  *       "data" : {
  *          "artists": [
  *            {
-                 "spotify_id": "6vWDO969PvNqNYHIOW5v0m",
-                 "images": [
-                 {
-                    "height": 1000,
-                    "url": "https://i.scdn.co/image/673cd94546df0536954198867516fee18cee1605",
-                    "width": 1000
-                 },...
-               ],
-                 "type": "artist",
-                 "name": "Beyoncé",
-                 "uri": "spotify:artist:6vWDO969PvNqNYHIOW5v0m"
-               }
+								 "spotify_id": "6vWDO969PvNqNYHIOW5v0m",
+								 "images": [
+								 {
+										"height": 1000,
+										"url": "https://i.scdn.co/image/673cd94546df0536954198867516fee18cee1605",
+										"width": 1000
+								 },...
+							 ],
+								 "type": "artist",
+								 "name": "Beyoncé",
+								 "uri": "spotify:artist:6vWDO969PvNqNYHIOW5v0m"
+							 }
  *          ],
  *          "tracks": [
  *            {
-                "spotify_id": "02M6vucOvmRfMxTXDUwRXu",
-                "images": [],
-                "type": "track",
-                "name": "7/11",
-                "uri": "spotify:track:02M6vucOvmRfMxTXDUwRXu",
-                "artists": [
-                  {
-                    "spotify_id": "6vWDO969PvNqNYHIOW5v0m",
-                    "images": [],
-                    "type": "artist",
-                    "name": "Beyoncé",
-                    "uri": "spotify:artist:6vWDO969PvNqNYHIOW5v0m"
-                  }
-                ]
-              },...
+								"spotify_id": "02M6vucOvmRfMxTXDUwRXu",
+								"images": [],
+								"type": "track",
+								"name": "7/11",
+								"uri": "spotify:track:02M6vucOvmRfMxTXDUwRXu",
+								"artists": [
+									{
+										"spotify_id": "6vWDO969PvNqNYHIOW5v0m",
+										"images": [],
+										"type": "artist",
+										"name": "Beyoncé",
+										"uri": "spotify:artist:6vWDO969PvNqNYHIOW5v0m"
+									}
+								]
+							},...
  *          ]
  *          "albums": [...],
  *          "genres": [
@@ -72,24 +72,28 @@ const app = new Router();
  *            }
  *          ],
  *          "top_result": {
-              "spotify_id": "6vWDO969PvNqNYHIOW5v0m",
-              "images": [],
-              "type": "artist",
-              "name": "Beyoncé",
-              "uri": "spotify:artist:6vWDO969PvNqNYHIOW5v0m"
-            }
+							"spotify_id": "6vWDO969PvNqNYHIOW5v0m",
+							"images": [],
+							"type": "artist",
+							"name": "Beyoncé",
+							"uri": "spotify:artist:6vWDO969PvNqNYHIOW5v0m"
+						}
  *     }
  */
 app.get('/', async (req, res) => {
-  // try {
-    const searcher = new Searcher();
-    const search = createCachedFunction(searcher.search,
-       {context: searcher, namespace: 'searchController'});
-    let types = req.query.type ? req.query.type.split(',') : null;
+	
+	const searcher = new Searcher();
+	// eslint-disable-next-line no-unused-vars
+	const token = await searcher.refreshToken();
+	const search = createCachedFunction(searcher.search,
+		{ context: searcher, namespace: 'searchController' });
+	let types = req.query.type ? req.query.type.split(',') : null;
 
-    let data = await search(req.query.q, req.query.page, types);
-    res.header("Access-Control-Allow-Origin", "*");
-    res.json({data});
+	let data = await search(req.query.q, req.query.page, types);
+	res.header("Access-Control-Allow-Origin", "*");
+	res.json({ data });
+
+
 });
 
 export default app;

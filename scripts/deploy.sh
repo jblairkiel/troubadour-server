@@ -10,7 +10,7 @@ if [ $TRAVIS_BRANCH == 'master' ] && [ "$TRAVIS_PULL_REQUEST" = "false" ]; then
 
     git remote add deploy "ssh://www-user@troubadour.tk/home/www-user/web_apps/troubadour/.git"
     git config user.name "Travis CI"
-    git config user.email "marcushill12@gmail.com"
+    git config user.email "jblairkiel@gmail.com"
 
     git add .
     git commit -m "Deploy"
