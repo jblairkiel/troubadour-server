@@ -69,19 +69,32 @@ export default class Searcher {
 			});
 	}
 
-	async getToken(){
+	async getToken() {
+		const data = await this.spotifyApi.clientCredentialsGrant()
+		// Save the access token so that it's used in future calls
+		this.spotifyApi.setAccessToken(data.body['access_token']);
+		this.spotifyApi.setCredentials({ accessToken: data.body['access_token'] })
+		this.spotifyApi.setRefreshToken(data.body['refresh_token']);
 
 		// Retrieve an access token.
-		this.spotifyApi.clientCredentialsGrant()
-			.then((data) => {
-				// Save the access token so that it's used in future calls
-				this.spotifyApi.setAccessToken(data.body['access_token']);
-				this.spotifyApi.setCredentials({ accessToken: data.body['access_token'] })
-			})
-			.catch((err) => {
-				console.log('Something went wrong when retrieving an access token',
-					err);
-			});
+		const currentCreds = this.spotifyApi.getCredentials();
+		if (currentCreds.accessToken) {
+			const data = await this.spotifyApi.refreshAccessToken()
+			this.spotifyApi.setAccessToken(data.body['access_token']);
+		} else {
+
+			this.spotifyApi.clientCredentialsGrant()
+				.then((data) => {
+					// Save the access token so that it's used in future calls
+					this.spotifyApi.setAccessToken(data.body['access_token']);
+					this.spotifyApi.setCredentials({ accessToken: data.body['access_token'] })
+					this.spotifyApi.setRefreshToken(data.body['refresh_token']);
+				})
+				.catch((err) => {
+					console.log('Something went wrong when retrieving an access token',
+						err);
+				});
+		}
 	}
 
 	async refreshToken() {
@@ -89,6 +102,7 @@ export default class Searcher {
 		const data = await this.spotifyApi.clientCredentialsGrant()
 		this.spotifyApi.setAccessToken(data.body['access_token']);
 		this.spotifyApi.setCredentials({ accessToken: data.body['access_token'] })
+		this.spotifyApi.setRefreshToken(data.body['refresh_token']);
 		return data.body['access_token']
 	}
 

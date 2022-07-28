@@ -4,7 +4,7 @@ import Searcher from '../search';
 import { createCachedFunction } from '../cache';
 
 const app = new Router();
-
+const searcher = new Searcher();
 /* eslint-disable max-len */
 /**
  * @api {get} /search?q=:q&page=:page Search
@@ -82,9 +82,9 @@ const app = new Router();
  */
 app.get('/', async (req, res) => {
 	
-	const searcher = new Searcher();
 	// eslint-disable-next-line no-unused-vars
 	const token = await searcher.refreshToken();
+	//const token = await searcher.refreshToken();
 	const search = createCachedFunction(searcher.search,
 		{ context: searcher, namespace: 'searchController' });
 	let types = req.query.type ? req.query.type.split(',') : null;
