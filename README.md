@@ -44,7 +44,7 @@ This will start up a docker container running redis listening on port 6379 of yo
 
   ```bash
    psql -h localhost -U postgres -f sql/create_tables.sql
-   psql -h localhost -U postgres -f sql/databse_update_1.sql
+   psql -h localhost -U postgres -f sql/database_update_1.sql
   ```
 
 6. Next create a file named `.env` on the same level as the `package.json`. Put the following the file.
