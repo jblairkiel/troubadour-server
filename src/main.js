@@ -50,13 +50,13 @@ app.get('/', function (req, res) {
   res.send('Hello World!');
 });
 
-app.use('/search', searchController);
+app.use('/api/search', searchController);
 
-app.use('/location', locationController);
-app.use('/preferences', preferencesController);
-app.use('/nearby', nearbyController);
-app.use('/playlist', playlistController);
-app.use('/user', userController);
+app.use('/api/location', locationController);
+app.use('/api/preferences', preferencesController);
+app.use('/api/nearby', nearbyController);
+app.use('/api/playlist', playlistController);
+app.use('/api/user', userController);
 
 if (process.env.NODE_ENV === 'development') {
   app.use('/docs', express.static('out/docs'));
