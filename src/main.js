@@ -46,7 +46,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 //Comments so root goes to app
-app.get('/', function (req, res) {
+app.get('/api', function (req, res) {
   res.send('Hello World!');
 });
 
