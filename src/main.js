@@ -45,6 +45,7 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('combined'));
 }
 
+//Comments so root goes to app
 app.get('/', function (req, res) {
   res.send('Hello World!');
 });

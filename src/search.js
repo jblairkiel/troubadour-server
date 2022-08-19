@@ -3,7 +3,7 @@ import Levenshtein from 'levenshtein';
 import { groupBy, TroubadourError } from './helpers';
 import { tryCacheForeach, cacheItems } from './cache';
 // eslint-disable-next-line no-unused-vars
-const dotenv = require('dotenv');
+const dotenv = require('dotenv').config();
 const SEARCH_TYPES = ['track', 'genre', 'album', 'artist'];
 
 const GENRES = require(process.env.GENRE_FILE);
